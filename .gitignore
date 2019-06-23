@@ -19,3 +19,9 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Vue Browser Extension Output
+*.pem
+*.pub
+*.zip
+/dist-zip
