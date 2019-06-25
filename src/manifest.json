@@ -10,8 +10,8 @@
     "128": "icons/128.png"
   },
   "permissions": [
-    "<all_urls>",
-    "*://*/*"
+    "activeTab",
+    "tabs"
   ],
   "background": {
       "scripts": [
@@ -19,6 +19,12 @@
       ],
       "persistent": false
     },
+  "content_scripts":[{
+    "matches":[
+      "<all_urls>"
+    ],
+    "js":["content.js"]
+  }],
   "browser_action": {
     "default_popup": "popup/popup.html",
     "default_title": "__MSG_extName__",

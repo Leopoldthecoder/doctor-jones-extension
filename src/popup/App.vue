@@ -1,19 +1,11 @@
 <template>
   <div>
-    <router-view></router-view>
+    <v-app>
+      <router-view></router-view>
+    </v-app>
   </div>
 </template>
 
 <script>
-export default {
-  data() {
-    return {};
-  }
-};
+export default {};
 </script>
-
-<style lang="stylus">
-html
-  width 600px
-  height 400px
-</style>

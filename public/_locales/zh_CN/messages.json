@@ -2,5 +2,8 @@
   "extName": {
     "message": "琼斯医生",
     "description": ""
+  },
+  "confirmFormat": {
+    "message": "格式化当前页面"
   }
 }

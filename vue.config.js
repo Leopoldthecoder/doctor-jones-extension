@@ -10,6 +10,7 @@ module.exports = {
       registry: undefined,
       components: {
         background: true,
+        contentScripts: true,
         popup: true
       },
       api: "chrome",
@@ -18,6 +19,11 @@ module.exports = {
       componentOptions: {
         background: {
           entry: "src/background.js"
+        },
+        contentScripts: {
+          entries: {
+            content: "src/content_scripts/index.js"
+          }
         }
       }
     }
