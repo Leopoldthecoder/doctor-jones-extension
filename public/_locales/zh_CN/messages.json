@@ -1,9 +1,53 @@
 {
   "extName": {
-    "message": "琼斯医生",
-    "description": ""
+    "message": "琼斯医生"
   },
-  "confirmFormat": {
+  "format": {
     "message": "格式化当前页面"
+  },
+  "revoke": {
+    "message": "还原当前页面"
+  },
+  "options": {
+    "message": "格式化选项"
+  },
+  "issues": {
+    "message": "问题/建议"
+  },
+  "spacing": {
+    "message": "在中文和字母数字之间添加空格"
+  },
+  "spaceBetweenFullwidthPunctuationAndAlphabets": {
+    "message": "允许在全角符号与字母数字之间存在空格"
+  },
+  "successiveExclamationMarks": {
+    "message": "允许连续的感叹号"
+  },
+  "ellipsisTolerance": {
+    "message": "允许的省略号"
+  },
+  "replaceWithCornerQuotes": {
+    "message": "使用直角引号替换的弯引号"
+  },
+  "halfwidthParenthesisAroundNumbers": {
+    "message": "在数字周围使用半角括号"
+  },
+  "ellipsisNone": {
+    "message": "无"
+  },
+  "ellipsisDots": {
+    "message": "..."
+  },
+  "ellipsisAll": {
+    "message": "所有"
+  },
+  "quotationNone": {
+    "message": "不替换"
+  },
+  "quotationDouble": {
+    "message": "双引号"
+  },
+  "quotationSingle": {
+    "message": "单引号"
   }
 }

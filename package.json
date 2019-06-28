@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
-    "doctor-jones": "^0.2.2",
+    "doctor-jones": "^0.2.3",
+    "material-design-icons-iconfont": "^5.0.1",
     "vue": "^2.6.10",
     "vue-router": "^3.0.1",
     "vuetify": "^1.5.16",

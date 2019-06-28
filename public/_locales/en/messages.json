@@ -1,9 +1,53 @@
 {
   "extName": {
-    "message": "doctor jones",
-    "description": ""
+    "message": "Doctor Jones"
   },
-  "confirmFormat": {
+  "format": {
     "message": "Format this page"
+  },
+  "revoke": {
+    "message": "Revoke"
+  },
+  "options": {
+    "message": "Format Options"
+  },
+  "issues": {
+    "message": "Questions/Suggestions"
+  },
+  "spacing": {
+    "message": "Add a halfwidth space between Chinese character and alphabet/number"
+  },
+  "spaceBetweenFullwidthPunctuationAndAlphabets": {
+    "message": "Allow unnecessary halfwidth space between fullwidth punctuation and alphabet/number"
+  },
+  "successiveExclamationMarks": {
+    "message": "Allow successive exclamation marks"
+  },
+  "ellipsisTolerance": {
+    "message": "Allowed ellipses"
+  },
+  "replaceWithCornerQuotes": {
+    "message": "Replace the following mark with corner quotes"
+  },
+  "halfwidthParenthesisAroundNumbers": {
+    "message": "Replace fullwidth brackets around numbers with halfwidth ones"
+  },
+  "ellipsisNone": {
+    "message": "None"
+  },
+  "ellipsisDots": {
+    "message": "..."
+  },
+  "ellipsisAll": {
+    "message": "All"
+  },
+  "quotationNone": {
+    "message": "Nothing"
+  },
+  "quotationDouble": {
+    "message": "Double quotes"
+  },
+  "quotationSingle": {
+    "message": "Single quotes"
   }
 }
