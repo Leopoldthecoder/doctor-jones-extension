@@ -9,7 +9,7 @@ module.exports = {
     browserExtension: {
       registry: undefined,
       components: {
-        background: true,
+        background: false,
         contentScripts: true,
         popup: true
       },
@@ -17,9 +17,6 @@ module.exports = {
       usePolyfill: false,
       autoImportPolyfill: false,
       componentOptions: {
-        background: {
-          entry: "src/background.js"
-        },
         contentScripts: {
           entries: {
             content: "src/content_scripts/index.js"

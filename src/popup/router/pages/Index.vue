@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <h1>{{ titleText }}</h1>
+    <img src="./logo.png" alt="logo" />
     <v-btn color="primary" @click.native="onFormatClick">{{
       formatText
     }}</v-btn>
@@ -31,9 +31,6 @@ export default {
 
   computed: {
     ...mapState(["options"]),
-    titleText() {
-      return chrome.i18n.getMessage("extName");
-    },
 
     formatText() {
       return chrome.i18n.getMessage("format");
@@ -96,6 +93,11 @@ text-color=#fcf9ec
   h1
     color text-color
     margin 20px 0 50px
+
+  img
+    height 100px
+    filter drop-shadow(0 0 30px #12d3cf)
+    margin 100px 0
 
   button.v-btn
     color text-color
