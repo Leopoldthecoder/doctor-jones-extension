@@ -1,4 +1,7 @@
 module.exports = {
+  css: {
+    extract: false
+  },
   pages: {
     "popup/popup": {
       entry: "src/popup/popup.js",

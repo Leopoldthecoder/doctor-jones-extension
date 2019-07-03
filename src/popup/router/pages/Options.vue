@@ -129,6 +129,7 @@ export default {
         value: v || !!v,
         key
       });
+      chrome.storage.sync.set({ FORMAT_OPTIONS: this.options });
     }
   }
 };
