@@ -1,6 +1,6 @@
 {
   "name": "doctor-jones-extension",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service build --mode development --watch",
@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "debounce": "^1.2.0",
     "doctor-jones": "^0.2.3",
     "material-design-icons-iconfont": "^5.0.1",
     "vue": "^2.6.10",
