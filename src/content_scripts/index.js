@@ -6,16 +6,11 @@ let storedOptions = {};
 
 let textNodes = [];
 let touched = false;
+let manualRevoked = false;
 
 let execStart;
 let execCount = 0;
 let execFlag = true;
-
-chrome.storage.sync.get(["FORMAT_OPTIONS"], result => {
-  if (result && result["FORMAT_OPTIONS"]) {
-    storedOptions = result["FORMAT_OPTIONS"];
-  }
-});
 
 const walk = nodes => {
   nodes.forEach(node => {
@@ -42,7 +37,7 @@ const format = (options, mustExec = false) => {
     if (execStart && Date.now() - execStart <= 3000) {
       execCount++;
       if (execCount >= 20) {
-        // 若三秒内执行 20 次以上 format，则暂停三秒
+        // 若三秒内执行了 20 次以上 format，则暂停三秒
         pauseExec();
       }
     } else {
@@ -70,21 +65,33 @@ const format = (options, mustExec = false) => {
   });
 };
 
-const debouncedFormat = debounce(format, 100);
+const autoFormat = () => {
+  const debouncedFormat = debounce(format, 100);
 
-const mutationHandler = mutationList => {
-  mutationList.forEach(() => {
-    debouncedFormat(storedOptions);
-  });
+  const mutationHandler = mutationList => {
+    if (manualRevoked) return;
+    mutationList.forEach(() => {
+      debouncedFormat(storedOptions);
+    });
+  };
+
+  const observerOptions = {
+    childList: true,
+    subtree: true
+  };
+
+  const observer = new MutationObserver(mutationHandler);
+  observer.observe(document.body, observerOptions);
 };
 
-const observerOptions = {
-  childList: true,
-  subtree: true
-};
-
-const observer = new MutationObserver(mutationHandler);
-observer.observe(document.body, observerOptions);
+chrome.storage.sync.get(["FORMAT_OPTIONS"], result => {
+  if (result && result["FORMAT_OPTIONS"]) {
+    storedOptions = result["FORMAT_OPTIONS"];
+    if (storedOptions.autoFormat) {
+      autoFormat();
+    }
+  }
+});
 
 chrome.runtime.onMessage.addListener((request, sender) => {
   if (chrome.runtime.id !== sender.id) {
@@ -99,6 +106,7 @@ chrome.runtime.onMessage.addListener((request, sender) => {
     case messageType.revoke:
       if (!touched) return;
       touched = false;
+      manualRevoked = true;
       textNodes.forEach(node => {
         if (node.hasChildNodes()) return;
         switch (node.nodeType) {

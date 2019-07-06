@@ -7,6 +7,10 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     options: {
+      // 通用选项
+      autoFormat: false,
+
+      // 格式化选项
       spacing: true,
       spaceBetweenFullwidthPunctuationAndAlphabets: false,
       successiveExclamationMarks: false,

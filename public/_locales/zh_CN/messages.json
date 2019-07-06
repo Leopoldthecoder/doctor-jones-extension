@@ -9,10 +9,19 @@
     "message": "还原当前页面"
   },
   "options": {
-    "message": "格式化选项"
+    "message": "选项"
   },
   "issues": {
     "message": "问题/建议"
+  },
+  "generalOptions": {
+    "message": "通用选项"
+  },
+  "formatOptions": {
+    "message": "格式化选项"
+  },
+  "autoFormat": {
+    "message": "页面打开后自动格式化"
   },
   "spacing": {
     "message": "在中文和字母数字之间添加空格"

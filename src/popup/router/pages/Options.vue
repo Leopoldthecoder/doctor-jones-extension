@@ -4,63 +4,80 @@
       <i class="material-icons" @click="navigateBack">arrow_back</i>
       {{ titleText }}
     </h1>
-    <v-switch
-      :label="labelText.spacing"
-      :input-value="options.spacing"
-      @change="
-        v => {
-          onChange(v, 'spacing');
-        }
-      "
-    ></v-switch>
-    <v-switch
-      :label="labelText.spaceBetweenFullwidthPunctuationAndAlphabets"
-      :input-value="options.spaceBetweenFullwidthPunctuationAndAlphabets"
-      @change="
-        v => {
-          onChange(v, 'spaceBetweenFullwidthPunctuationAndAlphabets');
-        }
-      "
-    ></v-switch>
-    <v-switch
-      :label="labelText.successiveExclamationMarks"
-      row
-      :input-value="options.successiveExclamationMarks"
-      @change="
-        v => {
-          onChange(v, 'successiveExclamationMarks');
-        }
-      "
-    ></v-switch>
-    <v-switch
-      :label="labelText.halfwidthParenthesisAroundNumbers"
-      :input-value="options.halfwidthParenthesisAroundNumbers"
-      @change="
-        v => {
-          onChange(v, 'halfwidthParenthesisAroundNumbers');
-        }
-      "
-    ></v-switch>
-    <v-select
-      :label="labelText.ellipsisTolerance"
-      :items="ellipsisOptions"
-      :value="options.ellipsisTolerance"
-      @change="
-        v => {
-          onChange(v, 'ellipsisTolerance');
-        }
-      "
-    ></v-select>
-    <v-select
-      :label="labelText.replaceWithCornerQuotes"
-      :items="quotationOptions"
-      :value="options.replaceWithCornerQuotes"
-      @change="
-        v => {
-          onChange(v, 'replaceWithCornerQuotes');
-        }
-      "
-    ></v-select>
+    <section class="options-container">
+      <section class="options-group">
+        <h2 class="options-group-title">{{ generalOptionsText }}</h2>
+        <v-switch
+          :label="generalLabelText.autoFormat"
+          :input-value="options.autoFormat"
+          @change="
+            v => {
+              onChange(v, 'autoFormat');
+            }
+          "
+        ></v-switch>
+      </section>
+      <section class="options-group">
+        <h2 class="options-group-title">{{ formatOptionsText }}</h2>
+        <v-switch
+          :label="formatLabelText.spacing"
+          :input-value="options.spacing"
+          @change="
+            v => {
+              onChange(v, 'spacing');
+            }
+          "
+        ></v-switch>
+        <v-switch
+          :label="formatLabelText.spaceBetweenFullwidthPunctuationAndAlphabets"
+          :input-value="options.spaceBetweenFullwidthPunctuationAndAlphabets"
+          @change="
+            v => {
+              onChange(v, 'spaceBetweenFullwidthPunctuationAndAlphabets');
+            }
+          "
+        ></v-switch>
+        <v-switch
+          :label="formatLabelText.successiveExclamationMarks"
+          row
+          :input-value="options.successiveExclamationMarks"
+          @change="
+            v => {
+              onChange(v, 'successiveExclamationMarks');
+            }
+          "
+        ></v-switch>
+        <v-switch
+          :label="formatLabelText.halfwidthParenthesisAroundNumbers"
+          :input-value="options.halfwidthParenthesisAroundNumbers"
+          @change="
+            v => {
+              onChange(v, 'halfwidthParenthesisAroundNumbers');
+            }
+          "
+        ></v-switch>
+        <v-select
+          :label="formatLabelText.ellipsisTolerance"
+          :items="ellipsisOptions"
+          :value="options.ellipsisTolerance"
+          @change="
+            v => {
+              onChange(v, 'ellipsisTolerance');
+            }
+          "
+        ></v-select>
+        <v-select
+          :label="formatLabelText.replaceWithCornerQuotes"
+          :items="quotationOptions"
+          :value="options.replaceWithCornerQuotes"
+          @change="
+            v => {
+              onChange(v, 'replaceWithCornerQuotes');
+            }
+          "
+        ></v-select>
+      </section>
+    </section>
   </div>
 </template>
 
@@ -109,7 +126,21 @@ export default {
       return chrome.i18n.getMessage("options");
     },
 
-    labelText() {
+    generalOptionsText() {
+      return chrome.i18n.getMessage("generalOptions");
+    },
+
+    formatOptionsText() {
+      return chrome.i18n.getMessage("formatOptions");
+    },
+
+    generalLabelText() {
+      return {
+        autoFormat: chrome.i18n.getMessage("autoFormat")
+      };
+    },
+
+    formatLabelText() {
       return this.options
         ? Object.keys(this.options).reduce((acc, cur) => {
             acc[cur] = chrome.i18n.getMessage(cur);
@@ -138,6 +169,9 @@ export default {
 <style lang="stylus" scoped>
 .options
   padding-bottom 20px
+  height 600px
+  display flex
+  flex-direction column
 
   >>>
     .v-input
@@ -178,4 +212,14 @@ export default {
       left 20px
       top 4px
       cursor pointer
+
+.options-container
+  overflow auto
+  flex 1
+
+.options-group
+  margin-bottom 50px
+
+.options-group-title
+  margin 0 20px 20px
 </style>
