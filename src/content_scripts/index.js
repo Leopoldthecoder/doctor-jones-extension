@@ -14,6 +14,13 @@ let execFlag = true;
 
 const walk = nodes => {
   nodes.forEach(node => {
+    if (
+      ["SCRIPT", "STYLE", "META", "LINK", "HEAD", "SVG", "PATH"].includes(
+        (node.tagName || "").toUpperCase()
+      )
+    ) {
+      return;
+    }
     if (node.hasChildNodes()) {
       walk(node.childNodes);
     } else if (node.nodeType === 1 || node.nodeType === 3) {
