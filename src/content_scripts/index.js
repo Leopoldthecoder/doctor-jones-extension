@@ -21,6 +21,12 @@ const walk = nodes => {
     ) {
       return;
     }
+    if (node.getAttribute && node.getAttribute("contenteditable")) {
+      const activeElement = document.activeElement;
+      if (activeElement && node.contains(activeElement)) {
+        return;
+      }
+    }
     if (node.hasChildNodes()) {
       walk(node.childNodes);
     } else if (node.nodeType === 1 || node.nodeType === 3) {
