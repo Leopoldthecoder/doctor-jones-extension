@@ -1,4 +1,6 @@
 export const messageType = {
   format: "format",
-  revoke: "revoke"
+  revoke: "revoke",
+  startAutoFormat: "startAutoFormat",
+  stopAutoFormat: "stopAutoFormat"
 };

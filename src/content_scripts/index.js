@@ -8,10 +8,6 @@ let textNodes = [];
 let touched = false;
 let manualRevoked = false;
 
-let execStart;
-let execCount = 0;
-let execFlag = true;
-
 const walk = nodes => {
   nodes.forEach(node => {
     if (
@@ -35,29 +31,7 @@ const walk = nodes => {
   });
 };
 
-const pauseExec = () => {
-  execFlag = false;
-  setTimeout(() => {
-    execFlag = true;
-    execStart = null;
-    execCount = 0;
-  }, 3000);
-};
-
-const format = (options, mustExec = false) => {
-  if (!mustExec) {
-    if (!execFlag) return;
-    if (execStart && Date.now() - execStart <= 3000) {
-      execCount++;
-      if (execCount >= 20) {
-        // 若三秒内执行了 20 次以上 format，则暂停三秒
-        pauseExec();
-      }
-    } else {
-      execStart = Date.now();
-    }
-  }
-
+const format = options => {
   touched = true;
   textNodes = [];
   walk([document.documentElement]);
@@ -78,8 +52,10 @@ const format = (options, mustExec = false) => {
   });
 };
 
+let observer;
+
 const autoFormat = () => {
-  const debouncedFormat = debounce(format, 100);
+  const debouncedFormat = debounce(format, 100, true);
 
   const mutationHandler = mutationList => {
     if (manualRevoked) return;
@@ -93,8 +69,9 @@ const autoFormat = () => {
     subtree: true
   };
 
-  const observer = new MutationObserver(mutationHandler);
+  observer = new MutationObserver(mutationHandler);
   observer.observe(document.body, observerOptions);
+  debouncedFormat(storedOptions);
 };
 
 chrome.storage.sync.get(["FORMAT_OPTIONS"], result => {
@@ -106,6 +83,24 @@ chrome.storage.sync.get(["FORMAT_OPTIONS"], result => {
   }
 });
 
+const revoke = () => {
+  if (!touched) return;
+  touched = false;
+  textNodes.forEach(node => {
+    if (node.hasChildNodes()) return;
+    switch (node.nodeType) {
+      case 1:
+        node.innerText = node._innerText || node.innerText;
+        break;
+      case 3:
+        node.nodeValue = node._nodeValue || node.nodeValue;
+        break;
+      default:
+        break;
+    }
+  });
+};
+
 chrome.runtime.onMessage.addListener((request, sender) => {
   if (chrome.runtime.id !== sender.id) {
     return;
@@ -113,26 +108,23 @@ chrome.runtime.onMessage.addListener((request, sender) => {
 
   switch (request.type) {
     case messageType.format:
-      format(request.options, true);
+      format(request.options);
       break;
 
     case messageType.revoke:
-      if (!touched) return;
-      touched = false;
+      revoke();
       manualRevoked = true;
-      textNodes.forEach(node => {
-        if (node.hasChildNodes()) return;
-        switch (node.nodeType) {
-          case 1:
-            node.innerText = node._innerText || node.innerText;
-            break;
-          case 3:
-            node.nodeValue = node._nodeValue || node.nodeValue;
-            break;
-          default:
-            break;
-        }
-      });
+      break;
+
+    case messageType.startAutoFormat:
+      autoFormat();
+      break;
+
+    case messageType.stopAutoFormat:
+      if (observer) {
+        observer.disconnect();
+      }
+      revoke();
       break;
 
     default:

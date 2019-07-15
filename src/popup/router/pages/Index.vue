@@ -21,14 +21,9 @@
 <script>
 import { mapState } from "vuex";
 import { messageType } from "../../../const";
+import { getActiveTab } from "../../utils";
 
 export default {
-  data() {
-    return {
-      activeTab: null
-    };
-  },
-
   computed: {
     ...mapState(["options"]),
 
@@ -50,19 +45,8 @@ export default {
   },
 
   methods: {
-    getTab() {
-      if (!this.activeTab) {
-        this.activeTab = new Promise(resolve => {
-          chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-            resolve(tabs[0]);
-          });
-        });
-      }
-      return this.activeTab;
-    },
-
     async onFormatClick() {
-      const tab = await this.getTab();
+      const tab = await getActiveTab();
       chrome.tabs.sendMessage(tab.id, {
         type: messageType.format,
         options: this.options || {}
@@ -70,7 +54,7 @@ export default {
     },
 
     async onRevokeClick() {
-      const tab = await this.getTab();
+      const tab = await getActiveTab();
       chrome.tabs.sendMessage(tab.id, {
         type: messageType.revoke
       });

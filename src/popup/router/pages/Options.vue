@@ -13,6 +13,7 @@
           @change="
             v => {
               onChange(v, 'autoFormat');
+              onAutoFormatChange(v);
             }
           "
         ></v-switch>
@@ -84,6 +85,8 @@
 <script>
 import { mapState } from "vuex";
 import * as types from "../../../store/mutation-types";
+import { messageType } from "../../../const";
+import { getActiveTab } from "../../utils";
 
 export default {
   data() {
@@ -161,6 +164,13 @@ export default {
         key
       });
       chrome.storage.sync.set({ FORMAT_OPTIONS: this.options });
+    },
+
+    async onAutoFormatChange(v) {
+      const tab = await getActiveTab();
+      chrome.tabs.sendMessage(tab.id, {
+        type: messageType[v ? "startAutoFormat" : "stopAutoFormat"]
+      });
     }
   }
 };
