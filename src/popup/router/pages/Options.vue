@@ -17,6 +17,20 @@
             }
           "
         ></v-switch>
+        <template v-if="options.autoFormat">
+          <p class="option-label">{{ generalLabelText.blacklist }}</p>
+          <v-textarea
+            solo
+            no-resize
+            :placeholder="generalLabelText.blacklistPlaceholder"
+            :value="options.blacklist"
+            @change="
+              v => {
+                onChange(v, 'blacklist', false);
+              }
+            "
+          ></v-textarea>
+        </template>
       </section>
       <section class="options-group">
         <h2 class="options-group-title">{{ formatOptionsText }}</h2>
@@ -139,7 +153,9 @@ export default {
 
     generalLabelText() {
       return {
-        autoFormat: chrome.i18n.getMessage("autoFormat")
+        autoFormat: chrome.i18n.getMessage("autoFormat"),
+        blacklist: chrome.i18n.getMessage("blacklist"),
+        blacklistPlaceholder: chrome.i18n.getMessage("blacklistPlaceholder")
       };
     },
 
@@ -158,9 +174,9 @@ export default {
       this.$router.back();
     },
 
-    onChange(v, key) {
+    onChange(v, key, convertToBool = true) {
       this.$store.commit(types.UPDATE_OPTIONS, {
-        value: v || !!v,
+        value: convertToBool ? v || !!v : v,
         key
       });
       chrome.storage.sync.set({ FORMAT_OPTIONS: this.options });
@@ -209,6 +225,12 @@ export default {
       .v-label--active
         transform translateY(-18px)
 
+      &.v-textarea
+        textarea
+          color rgba(255, 255, 255, .7)
+          margin-bottom 12px
+          line-height 1.6
+
     .v-select__selections
       margin-top 6px
 
@@ -232,4 +254,9 @@ export default {
 
 .options-group-title
   margin 0 20px 20px
+
+.option-label
+  padding: 0 20px
+  margin-top 16px
+  color rgba(255, 255, 255, .7)
 </style>

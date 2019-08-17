@@ -9,6 +9,7 @@ export default new Vuex.Store({
     options: {
       // 通用选项
       autoFormat: false,
+      blacklist: "",
 
       // 格式化选项
       spacing: true,

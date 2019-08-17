@@ -23,6 +23,12 @@
   "autoFormat": {
     "message": "页面打开后自动格式化"
   },
+  "blacklist": {
+    "message": "自动格式化黑名单"
+  },
+  "blacklistPlaceholder": {
+    "message": "每行一个网址，格式为 www.youku.com 或 youku.com"
+  },
   "spacing": {
     "message": "在中文和字母数字之间添加空格"
   },

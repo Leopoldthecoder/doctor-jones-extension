@@ -23,6 +23,12 @@
   "autoFormat": {
     "message": "Auto format after page loads"
   },
+  "blacklist": {
+    "message": "Auto format black list"
+  },
+  "blacklistPlaceholder": {
+    "message": "One URL each line in the format of www.youku.com or youku.com"
+  },
   "spacing": {
     "message": "Add a halfwidth space between Chinese character and alphabet/number"
   },

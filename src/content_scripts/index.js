@@ -1,12 +1,14 @@
 import dj from "doctor-jones";
 import { messageType } from "../const";
 import { debounce } from "debounce";
+import { isInBlacklist } from "../popup/utils";
 
 let storedOptions = {};
 
 let textNodes = [];
 let touched = false;
 let manualRevoked = false;
+let blacklist = [];
 
 const walk = nodes => {
   nodes.forEach(node => {
@@ -55,6 +57,7 @@ const format = options => {
 let observer;
 
 const autoFormat = () => {
+  if (isInBlacklist(blacklist)) return;
   const debouncedFormat = debounce(format, 100, true);
 
   const mutationHandler = mutationList => {
@@ -77,6 +80,12 @@ const autoFormat = () => {
 chrome.storage.sync.get(["FORMAT_OPTIONS"], result => {
   if (result && result["FORMAT_OPTIONS"]) {
     storedOptions = result["FORMAT_OPTIONS"];
+    if (storedOptions.blacklist) {
+      blacklist = storedOptions.blacklist
+        .split("\n")
+        .map(s => s.trim())
+        .filter(Boolean);
+    }
     if (storedOptions.autoFormat) {
       autoFormat();
     }
