@@ -10,7 +10,7 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "debounce": "^1.2.0",
-    "doctor-jones": "^1.0.0",
+    "doctor-jones": "^1.0.2",
     "material-design-icons-iconfont": "^5.0.1",
     "parse-domain": "^2.3.2",
     "vue": "^2.6.10",
