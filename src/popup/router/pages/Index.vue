@@ -7,6 +7,7 @@
     <v-btn color="primary" @click.native="onRevokeClick">{{
       revokeText
     }}</v-btn>
+    <v-btn color="primary" @click.native="openService">{{ serviceText }}</v-btn>
     <v-btn color="accent" @click.native="openOptions">{{ optionText }}</v-btn>
     <footer>
       <a
@@ -35,6 +36,10 @@ export default {
       return chrome.i18n.getMessage("revoke");
     },
 
+    serviceText() {
+      return chrome.i18n.getMessage("service");
+    },
+
     optionText() {
       return chrome.i18n.getMessage("options");
     },
@@ -60,6 +65,10 @@ export default {
       });
     },
 
+    openService() {
+      this.$router.push("/service");
+    },
+
     openOptions() {
       this.$router.push("/options");
     }
@@ -81,7 +90,7 @@ text-color=#fcf9ec
   img
     height 100px
     filter drop-shadow(0 0 30px #12d3cf)
-    margin 100px 0
+    margin 90px 0
 
   button.v-btn
     color text-color

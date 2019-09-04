@@ -8,6 +8,9 @@
   "revoke": {
     "message": "Revoke"
   },
+  "service": {
+    "message": "Format a paragraph"
+  },
   "options": {
     "message": "Options"
   },
@@ -64,5 +67,17 @@
   },
   "quotationSingle": {
     "message": "Single quotes"
+  },
+  "serviceInputLabel": {
+    "message": "Input"
+  },
+  "serviceOutputLabel": {
+    "message": "Output"
+  },
+  "serviceInputPlaceholder": {
+    "message": "Enter some text"
+  },
+  "serviceOutputPlaceholder": {
+    "message": "Formatted output"
   }
 }

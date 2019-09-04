@@ -8,6 +8,9 @@
   "revoke": {
     "message": "还原当前页面"
   },
+  "service": {
+    "message": "格式化自定义段落"
+  },
   "options": {
     "message": "选项"
   },
@@ -64,5 +67,17 @@
   },
   "quotationSingle": {
     "message": "单引号"
+  },
+  "serviceInputLabel": {
+    "message": "输入"
+  },
+  "serviceOutputLabel": {
+    "message": "输出"
+  },
+  "serviceInputPlaceholder": {
+    "message": "输入一段任意文本"
+  },
+  "serviceOutputPlaceholder": {
+    "message": "格式化后的输出"
   }
 }

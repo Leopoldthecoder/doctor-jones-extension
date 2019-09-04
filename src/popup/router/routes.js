@@ -1,5 +1,6 @@
 import PageIndex from "./pages/Index";
 import PageOptions from "./pages/Options";
+import PageService from "./pages/Service";
 
 export default [
   {
@@ -9,5 +10,9 @@ export default [
   {
     path: "/options",
     component: PageOptions
+  },
+  {
+    path: "/service",
+    component: PageService
   }
 ];
