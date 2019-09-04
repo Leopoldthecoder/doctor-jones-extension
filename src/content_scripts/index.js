@@ -39,14 +39,21 @@ const format = options => {
   walk([document.documentElement]);
   textNodes.forEach(node => {
     if (node.hasChildNodes()) return;
+    let formattedText;
     switch (node.nodeType) {
       case 1:
         node._innerText = node._innerText || node.innerText;
-        node.innerText = dj(node.innerText, options);
+        formattedText = dj(node.innerText, options);
+        if (node.innerText !== formattedText) {
+          node.innerText = formattedText;
+        }
         break;
       case 3:
         node._nodeValue = node._nodeValue || node.nodeValue;
-        node.nodeValue = dj(node.nodeValue, options);
+        formattedText = dj(node.nodeValue, options);
+        if (node.nodeValue !== formattedText) {
+          node.nodeValue = formattedText;
+        }
         break;
       default:
         break;
