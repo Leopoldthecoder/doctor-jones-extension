@@ -25,3 +25,36 @@ export const isInBlacklist = blacklist => {
     );
   });
 };
+
+export const convertReversedQuotes = s => {
+  let counter = {
+    single: 0,
+    double: 0
+  };
+  const len = s.length;
+  let ans = "";
+  const quoteMap = {
+    "‘": "’",
+    "’": "‘",
+    "“": "”",
+    "”": "“"
+  };
+  for (let i = 0; i < len; i++) {
+    if (
+      (s[i] === "‘" && counter.single % 2 === 1) ||
+      (s[i] === "’" && counter.single % 2 === 0)
+    ) {
+      counter.single++;
+      ans += quoteMap[s[i]];
+    } else if (
+      (s[i] === "“" && counter.double % 2 === 1) ||
+      (s[i] === "”" && counter.double % 2 === 0)
+    ) {
+      counter.double++;
+      ans += quoteMap[s[i]];
+    } else {
+      ans += s[i];
+    }
+  }
+  return ans;
+};

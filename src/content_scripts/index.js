@@ -1,7 +1,7 @@
 import dj from "doctor-jones";
 import { messageType } from "../const";
 import { debounce } from "debounce";
-import { isInBlacklist } from "../popup/utils";
+import { isInBlacklist, convertReversedQuotes } from "../popup/utils";
 
 let storedOptions = {};
 
@@ -43,14 +43,14 @@ const format = options => {
     switch (node.nodeType) {
       case 1:
         node._innerText = node._innerText || node.innerText;
-        formattedText = dj(node.innerText, options);
+        formattedText = dj(convertReversedQuotes(node.innerText), options);
         if (node.innerText !== formattedText) {
           node.innerText = formattedText;
         }
         break;
       case 3:
         node._nodeValue = node._nodeValue || node.nodeValue;
-        formattedText = dj(node.nodeValue, options);
+        formattedText = dj(convertReversedQuotes(node.nodeValue), options);
         if (node.nodeValue !== formattedText) {
           node.nodeValue = formattedText;
         }
