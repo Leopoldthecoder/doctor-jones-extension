@@ -33,25 +33,14 @@ export const convertReversedQuotes = s => {
   };
   const len = s.length;
   let ans = "";
-  const quoteMap = {
-    "‘": "’",
-    "’": "‘",
-    "“": "”",
-    "”": "“"
-  };
   for (let i = 0; i < len; i++) {
-    if (
-      (s[i] === "‘" && counter.single % 2 === 1) ||
-      (s[i] === "’" && counter.single % 2 === 0)
-    ) {
+    const char = s[i];
+    if (char === "‘" || char === "’") {
+      ans += counter.single % 2 === 0 ? "‘" : "’";
       counter.single++;
-      ans += quoteMap[s[i]];
-    } else if (
-      (s[i] === "“" && counter.double % 2 === 1) ||
-      (s[i] === "”" && counter.double % 2 === 0)
-    ) {
+    } else if (char === "“" || char === "”") {
+      ans += counter.double % 2 === 0 ? "“" : "”";
       counter.double++;
-      ans += quoteMap[s[i]];
     } else {
       ans += s[i];
     }
