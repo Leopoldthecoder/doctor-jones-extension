@@ -28,7 +28,7 @@
     "eslint-plugin-vue": "^5.0.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
-    "vue-cli-plugin-browser-extension": "^0.15.0",
+    "vue-cli-plugin-browser-extension": "^0.25.2",
     "vue-template-compiler": "^2.6.10"
   }
 }
