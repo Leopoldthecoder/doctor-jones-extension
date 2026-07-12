@@ -5,10 +5,9 @@ import { defineConfig } from 'vite'
 import pkg from './package.json' with { type: 'json' }
 
 // The extension is built by vite-plugin-web-extension, which reads the manifest
-// at src/manifest.json, discovers its HTML/JS entry points (popup + content
-// script referenced by source path), bundles them, and rewrites the emitted
-// manifest. The manifest stays Manifest V2 during this toolchain phase; the
-// MV3 migration is a separate follow-up.
+// at src/manifest.json (Manifest V3), discovers its HTML/JS entry points (popup
+// + content script referenced by source path), bundles them, and rewrites the
+// emitted manifest.
 export default defineConfig({
   plugins: [
     vue(),
