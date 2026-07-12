@@ -1,0 +1,5 @@
+# spawn-sync (via vite-plugin-web-extension -> web-ext-run -> fx-runner) ships a
+# build script we don't need — this extension targets Chrome and is loaded
+# unpacked, so the Firefox runner never runs. Skip it (false) rather than run it.
+allowBuilds:
+  spawn-sync: false
