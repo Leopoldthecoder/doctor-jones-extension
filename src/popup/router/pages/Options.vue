@@ -1,262 +1,185 @@
 <template>
   <div class="options">
     <h1>
-      <i class="material-icons" @click="navigateBack">arrow_back</i>
-      {{ titleText }}
+      <v-icon class="back" icon="mdi-arrow-left" @click="navigateBack" />
+      {{ i18n('options') }}
     </h1>
     <section class="options-container">
       <section class="options-group">
-        <h2 class="options-group-title">{{ generalOptionsText }}</h2>
+        <h2 class="options-group-title">{{ i18n('generalOptions') }}</h2>
         <v-switch
-          :label="generalLabelText.autoFormat"
-          :input-value="options.autoFormat"
-          @change="
-            v => {
-              onChange(v, 'autoFormat');
-              onAutoFormatChange(v);
+          hide-details
+          :label="i18n('autoFormat')"
+          :model-value="options.autoFormat"
+          thumb-color="primary"
+          @update:model-value="
+            (v) => {
+              onChange(v, 'autoFormat')
+              onAutoFormatChange(v)
             }
           "
-        ></v-switch>
+        />
         <template v-if="options.autoFormat">
-          <p class="option-label">{{ generalLabelText.blacklist }}</p>
+          <p class="option-label">{{ i18n('blacklist') }}</p>
           <v-textarea
-            solo
+            variant="solo"
             no-resize
-            :placeholder="generalLabelText.blacklistPlaceholder"
-            :value="options.blacklist"
-            @change="
-              v => {
-                onChange(v, 'blacklist', false);
-              }
-            "
-          ></v-textarea>
+            hide-details
+            :placeholder="i18n('blacklistPlaceholder')"
+            :model-value="options.blacklist"
+            @update:model-value="(v) => onChange(v, 'blacklist', false)"
+          />
         </template>
       </section>
       <section class="options-group">
-        <h2 class="options-group-title">{{ formatOptionsText }}</h2>
+        <h2 class="options-group-title">{{ i18n('formatOptions') }}</h2>
         <v-switch
-          :label="formatLabelText.spacing"
-          :input-value="options.spacing"
-          @change="
-            v => {
-              onChange(v, 'spacing');
-            }
-          "
-        ></v-switch>
+          hide-details
+          :label="i18n('spacing')"
+          :model-value="options.spacing"
+          thumb-color="primary"
+          @update:model-value="(v) => onChange(v, 'spacing')"
+        />
         <v-switch
-          :label="formatLabelText.spaceBetweenFullwidthPunctuationAndAlphabets"
-          :input-value="options.spaceBetweenFullwidthPunctuationAndAlphabets"
-          @change="
-            v => {
-              onChange(v, 'spaceBetweenFullwidthPunctuationAndAlphabets');
-            }
+          hide-details
+          :label="i18n('spaceBetweenFullwidthPunctuationAndAlphabets')"
+          :model-value="options.spaceBetweenFullwidthPunctuationAndAlphabets"
+          thumb-color="primary"
+          @update:model-value="
+            (v) => onChange(v, 'spaceBetweenFullwidthPunctuationAndAlphabets')
           "
-        ></v-switch>
+        />
         <v-switch
-          :label="formatLabelText.successiveExclamationMarks"
-          row
-          :input-value="options.successiveExclamationMarks"
-          @change="
-            v => {
-              onChange(v, 'successiveExclamationMarks');
-            }
-          "
-        ></v-switch>
+          hide-details
+          :label="i18n('successiveExclamationMarks')"
+          :model-value="options.successiveExclamationMarks"
+          thumb-color="primary"
+          @update:model-value="(v) => onChange(v, 'successiveExclamationMarks')"
+        />
         <v-switch
-          :label="formatLabelText.halfwidthParenthesisAroundNumbers"
-          :input-value="options.halfwidthParenthesisAroundNumbers"
-          @change="
-            v => {
-              onChange(v, 'halfwidthParenthesisAroundNumbers');
-            }
+          hide-details
+          :label="i18n('halfwidthParenthesisAroundNumbers')"
+          :model-value="options.halfwidthParenthesisAroundNumbers"
+          thumb-color="primary"
+          @update:model-value="
+            (v) => onChange(v, 'halfwidthParenthesisAroundNumbers')
           "
-        ></v-switch>
+        />
         <v-select
-          :label="formatLabelText.ellipsisTolerance"
+          hide-details
+          :label="i18n('ellipsisTolerance')"
           :items="ellipsisOptions"
-          :value="options.ellipsisTolerance"
-          @change="
-            v => {
-              onChange(v, 'ellipsisTolerance');
-            }
-          "
-        ></v-select>
+          :model-value="options.ellipsisTolerance"
+          @update:model-value="(v) => onChange(v, 'ellipsisTolerance')"
+        />
         <v-select
-          :label="formatLabelText.replaceWithCornerQuotes"
+          hide-details
+          :label="i18n('replaceWithCornerQuotes')"
           :items="quotationOptions"
-          :value="options.replaceWithCornerQuotes"
-          @change="
-            v => {
-              onChange(v, 'replaceWithCornerQuotes');
-            }
-          "
-        ></v-select>
+          :model-value="options.replaceWithCornerQuotes"
+          @update:model-value="(v) => onChange(v, 'replaceWithCornerQuotes')"
+        />
       </section>
     </section>
   </div>
 </template>
 
-<script>
-import { mapState } from "vuex";
-import * as types from "../../../store/mutation-types";
-import { messageType } from "../../../const";
-import { getActiveTab } from "../../utils";
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+import browser from 'webextension-polyfill'
+import { messageType } from '../../../const'
+import { type FormatOptions, useOptionsStore } from '../../../store/options'
+import { getActiveTab } from '../../utils'
+import { storeToRefs } from 'pinia'
 
-export default {
-  data() {
-    return {
-      ellipsisOptions: [
-        {
-          text: chrome.i18n.getMessage("ellipsisNone"),
-          value: "none"
-        },
-        {
-          text: chrome.i18n.getMessage("ellipsisDots"),
-          value: "3dots"
-        },
-        {
-          text: chrome.i18n.getMessage("ellipsisAll"),
-          value: "all"
-        }
-      ],
-      quotationOptions: [
-        {
-          text: chrome.i18n.getMessage("quotationDouble"),
-          value: "double"
-        },
-        {
-          text: chrome.i18n.getMessage("quotationSingle"),
-          value: "single"
-        },
-        {
-          text: chrome.i18n.getMessage("quotationNone"),
-          value: "none"
-        }
-      ]
-    };
-  },
+const router = useRouter()
+const store = useOptionsStore()
+const { options } = storeToRefs(store)
 
-  computed: {
-    ...mapState(["options"]),
+const i18n = (key: string) => browser.i18n.getMessage(key)
 
-    titleText() {
-      return chrome.i18n.getMessage("options");
-    },
+const ellipsisOptions = [
+  { title: i18n('ellipsisNone'), value: 'none' },
+  { title: i18n('ellipsisDots'), value: '3dots' },
+  { title: i18n('ellipsisAll'), value: 'all' },
+]
 
-    generalOptionsText() {
-      return chrome.i18n.getMessage("generalOptions");
-    },
+const quotationOptions = [
+  { title: i18n('quotationDouble'), value: 'double' },
+  { title: i18n('quotationSingle'), value: 'single' },
+  { title: i18n('quotationNone'), value: 'none' },
+]
 
-    formatOptionsText() {
-      return chrome.i18n.getMessage("formatOptions");
-    },
+const navigateBack = () => router.back()
 
-    generalLabelText() {
-      return {
-        autoFormat: chrome.i18n.getMessage("autoFormat"),
-        blacklist: chrome.i18n.getMessage("blacklist"),
-        blacklistPlaceholder: chrome.i18n.getMessage("blacklistPlaceholder")
-      };
-    },
+const onChange = async <K extends keyof FormatOptions>(
+  value: unknown,
+  key: K,
+  convertToBool = true,
+) => {
+  const next = (
+    convertToBool ? value || Boolean(value) : value
+  ) as FormatOptions[K]
+  store.set(key, next)
+  await browser.storage.sync.set({ FORMAT_OPTIONS: { ...store.options } })
+}
 
-    formatLabelText() {
-      return this.options
-        ? Object.keys(this.options).reduce((acc, cur) => {
-            acc[cur] = chrome.i18n.getMessage(cur);
-            return acc;
-          }, {})
-        : {};
-    }
-  },
-
-  methods: {
-    navigateBack() {
-      this.$router.back();
-    },
-
-    onChange(v, key, convertToBool = true) {
-      this.$store.commit(types.UPDATE_OPTIONS, {
-        value: convertToBool ? v || !!v : v,
-        key
-      });
-      chrome.storage.sync.set({ FORMAT_OPTIONS: this.options });
-    },
-
-    async onAutoFormatChange(v) {
-      const tab = await getActiveTab();
-      chrome.tabs.sendMessage(tab.id, {
-        type: messageType[v ? "startAutoFormat" : "stopAutoFormat"]
-      });
-    }
+const onAutoFormatChange = async (value: unknown) => {
+  const tab = await getActiveTab()
+  if (tab?.id === undefined) {
+    return
   }
-};
+  await browser.tabs.sendMessage(tab.id, {
+    type: value ? messageType.startAutoFormat : messageType.stopAutoFormat,
+  })
+}
 </script>
 
-<style lang="stylus" scoped>
-.options
-  padding-bottom 20px
-  height 600px
-  display flex
-  flex-direction column
+<style scoped>
+.options {
+  padding-bottom: 20px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+}
 
-  >>>
-    .v-input
-      padding 0 20px
+.options h1 {
+  text-align: center;
+  margin: 30px 0;
+  position: relative;
+}
 
-    .v-messages
-      display none
+.options .back {
+  position: absolute;
+  left: 20px;
+  top: 2px;
+  cursor: pointer;
+}
 
-    .v-input--switch .v-input__slot
-      flex-direction row-reverse
-      justify-content space-between
+.options-container {
+  overflow: auto;
+  flex: 1;
+}
 
-    .v-input--selection-controls .v-input__control
-      flex-grow 1
+.options-group {
+  margin-bottom: 40px;
+}
 
-    .v-label
-      font-size 12px
+.options-group-title {
+  margin: 0 20px 12px;
+}
 
-    .v-text-field
-      margin-top 30px
+.option-label {
+  padding: 0 20px;
+  margin-top: 16px;
+  opacity: 0.7;
+}
 
-      .v-label
-        overflow inherit
+.options :deep(.v-input) {
+  padding: 0 20px;
+}
 
-      .v-label--active
-        transform translateY(-18px)
-
-      &.v-textarea
-        textarea
-          color rgba(255, 255, 255, .7)
-          margin-bottom 12px
-          line-height 1.6
-
-    .v-select__selections
-      margin-top 6px
-
-  h1
-    text-align center
-    margin 30px 0
-    position relative
-
-    i
-      position absolute
-      left 20px
-      top 4px
-      cursor pointer
-
-.options-container
-  overflow auto
-  flex 1
-
-.options-group
-  margin-bottom 50px
-
-.options-group-title
-  margin 0 20px 20px
-
-.option-label
-  padding: 0 20px
-  margin-top 16px
-  color rgba(255, 255, 255, .7)
+.options :deep(.v-select) {
+  margin-top: 20px;
+}
 </style>

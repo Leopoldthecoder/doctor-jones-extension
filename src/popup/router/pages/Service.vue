@@ -1,112 +1,83 @@
 <template>
   <div class="service">
     <h1>
-      <i class="material-icons" @click="navigateBack">arrow_back</i>
-      {{ titleText }}
+      <v-icon class="back" icon="mdi-arrow-left" @click="navigateBack" />
+      {{ i18n('service') }}
     </h1>
     <section class="service-container">
-      <label class="service-label">{{ inputLabel }}</label>
+      <label class="service-label">{{ i18n('serviceInputLabel') }}</label>
       <v-textarea
-        solo
-        no-resize
-        :placeholder="inputPlaceholder"
-        @input="onInput"
-      ></v-textarea>
-      <label class="service-label">{{ outputLabel }}</label>
+        variant="solo"
+        hide-details
+        :placeholder="i18n('serviceInputPlaceholder')"
+        @update:model-value="onInput"
+      />
+      <label class="service-label">{{ i18n('serviceOutputLabel') }}</label>
       <v-textarea
-        solo
-        no-resize
+        variant="solo"
         readonly
-        :placeholder="outputPlaceholder"
-        :value="formattedText"
-      ></v-textarea>
+        hide-details
+        :placeholder="i18n('serviceOutputPlaceholder')"
+        :model-value="formattedText"
+      />
     </section>
   </div>
 </template>
 
-<script>
-import { mapState } from "vuex";
-import dj from "doctor-jones";
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import browser from 'webextension-polyfill'
+import dj from 'doctor-jones'
+import { useOptionsStore } from '../../../store/options'
 
-export default {
-  data() {
-    return {
-      formattedText: ""
-    };
-  },
+const router = useRouter()
+const store = useOptionsStore()
 
-  computed: {
-    ...mapState(["options"]),
+const i18n = (key: string) => browser.i18n.getMessage(key)
+const formattedText = ref('')
 
-    titleText() {
-      return chrome.i18n.getMessage("service");
-    },
+const navigateBack = () => router.back()
 
-    inputLabel() {
-      return chrome.i18n.getMessage("serviceInputLabel");
-    },
-
-    outputLabel() {
-      return chrome.i18n.getMessage("serviceOutputLabel");
-    },
-
-    inputPlaceholder() {
-      return chrome.i18n.getMessage("serviceInputPlaceholder");
-    },
-
-    outputPlaceholder() {
-      return chrome.i18n.getMessage("serviceOutputPlaceholder");
-    }
-  },
-
-  methods: {
-    navigateBack() {
-      this.$router.back();
-    },
-
-    onInput(v) {
-      this.formattedText = dj(v, this.options);
-    }
-  }
-};
+const onInput = (value: string) => {
+  formattedText.value = dj(value, store.options)
+}
 </script>
 
-<style lang="stylus" scoped>
-.service
-  padding-bottom 20px
-  height 600px
-  display flex
-  flex-direction column
+<style scoped>
+.service {
+  padding-bottom: 20px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+}
 
-  >>>
-    .v-input
-      padding 0 20px
+.service h1 {
+  text-align: center;
+  margin: 30px 0;
+  position: relative;
+}
 
-    .v-text-field.v-textarea
-      textarea
-        color rgba(255, 255, 255, .7)
-        margin-bottom 12px
-        line-height 1.4
-        font-size 14px
+.service .back {
+  position: absolute;
+  left: 20px;
+  top: 2px;
+  cursor: pointer;
+}
 
-  h1
-    text-align center
-    margin 30px 0
-    position relative
+.service-container {
+  overflow: auto;
+  flex: 1;
+}
 
-    i
-      position absolute
-      left 20px
-      top 4px
-      cursor pointer
+.service-label {
+  padding: 0 20px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  display: block;
+}
 
-.service-container
-  overflow auto
-  flex 1
-
-.service-label
-  padding 0 20px
-  font-size 16px
-  margin-bottom 15px
-  display block
+.service :deep(.v-input) {
+  padding: 0 20px;
+}
 </style>
